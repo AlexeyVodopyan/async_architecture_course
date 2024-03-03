@@ -16,9 +16,9 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     logger.info(
-        "CONTAINER AUTH "
+        "AUTH SERVICE "
         "SUCCESSFULLY STARTED WITH VERSION"
-        " {}".format(os.getenv("CONTAINER_VERSION"))
+        " {}".format(os.getenv("AUTH_CONTAINER_VERSION"))
     )
 
     yield
