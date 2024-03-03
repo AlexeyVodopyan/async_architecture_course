@@ -1,10 +1,13 @@
 # stdlib
 import functools
+import uuid
 
 # thirdparty
+from fastapi import status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 # project
+from src.common.schemas.error import ExceptionBody, HTTPException
 from src.common.schemas.transactions_schemas import (
     ActionType,
     TransactionUpdateMessage,
@@ -13,6 +16,7 @@ from src.task_tracker.messaging.producers.transaction_producer import (
     TransactionsProducer,
 )
 from src.task_tracker.services.tasks.queries import (
+    close_task,
     get_tasks,
     get_users,
     insert_task,
@@ -43,6 +47,32 @@ class TasksAPI:
             action=ActionType.ASSIGNED,
             email=task_input.assigned_to,
             task_name=task_input.name,
+        )
+
+    async def close_task(self, session: AsyncSession, task_id: uuid.UUID):
+        query = close_task(task_id)
+        results = await session.execute(query)
+        task_info = results.all()
+
+        if task_info:
+            await session.commit()
+            await self._send_update_to_mq(
+                action=ActionType.CLOSED,
+                email=task_info[0][1],
+                task_name=task_info[0][0],
+            )
+            return
+
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=ExceptionBody(
+                [
+                    {
+                        "message": "Task is not found, check request params",
+                        "error": "BAD_REQUEST",
+                    }
+                ]
+            ),
         )
 
     async def reassign_tasks(self, session: AsyncSession):

@@ -42,7 +42,7 @@ class AuthAPI:
         user_info = result.one()
 
         if not user_info:
-            HTTPException(
+            raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail=ExceptionBody(
                     [

@@ -1,3 +1,6 @@
+# stdlib
+import uuid
+
 # thirdparty
 from pydantic import BaseModel, ConfigDict, RootModel
 
@@ -6,6 +9,7 @@ from src.task_tracker.models import TaskStatus
 
 
 class Task(BaseModel):
+    id: uuid.UUID
     name: str
     description: str | None
     assigned_to: str

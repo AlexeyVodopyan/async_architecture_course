@@ -1,5 +1,6 @@
 # stdlib
 import logging
+import uuid
 
 # thirdparty
 from fastapi import APIRouter, Depends, status
@@ -75,6 +76,26 @@ async def create_task(
     """
     await service.create_task(session=session, task_input=task_input)
     return {"message": "User successfully created"}
+
+
+@tasks_router.put(
+    path="/{task_id}/close",
+    description="Close task",
+    responses={
+        status.HTTP_201_CREATED: {"description": "Close task"},
+        status.HTTP_401_UNAUTHORIZED: {"description": "Not Authorized"},
+    },
+)
+async def close_task(
+    task_id: uuid.UUID,
+    service: TasksAPI = Depends(get_tasks_api_service),
+    session: AsyncSession = Depends(get_session),
+):
+    """
+    Create task
+    """
+    await service.close_task(session=session, task_id=task_id)
+    return {"message": "Task successfully closed"}
 
 
 @tasks_router.post(

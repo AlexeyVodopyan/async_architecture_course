@@ -1,5 +1,8 @@
+# stdlib
+import uuid
+
 # thirdparty
-from sqlalchemy import Insert, Select, insert, select
+from sqlalchemy import Insert, Select, Update, insert, select, update
 
 # project
 from src.task_tracker.models import Task, TaskStatus, User
@@ -7,6 +10,7 @@ from src.task_tracker.models import Task, TaskStatus, User
 
 def get_tasks() -> Select:
     query = select(
+        Task.id,
         Task.name,
         Task.description,
         Task.status,
@@ -32,5 +36,19 @@ def insert_task(
         assigned_to=assigned_to,
         description=description,
         status=TaskStatus.OPEN,
+    )
+    return query
+
+
+def close_task(
+    task_id: uuid.UUID,
+) -> Update:
+    query = (
+        update(Task)
+        .where(Task.id == task_id, Task.status == TaskStatus.OPEN)
+        .values(
+            status=TaskStatus.CLOSED,
+        )
+        .returning(Task.name, Task.assigned_to)
     )
     return query
