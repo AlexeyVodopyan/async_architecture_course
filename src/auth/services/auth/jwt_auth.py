@@ -9,7 +9,6 @@ from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 from redis.exceptions import ConnectionError
 
 # project
-from src.auth.common_schemas.error import ExceptionBody, HTTPException
 from src.auth.services.auth.jwt_generator import (
     JWTGenerator,
     get_jwt_generator,
@@ -17,6 +16,7 @@ from src.auth.services.auth.jwt_generator import (
 from src.auth.services.auth.schemas import Token
 from src.auth.settings.config import settings
 from src.auth.settings.redis import Redis, get_redis_client
+from src.common.schemas.error import ExceptionBody, HTTPException
 
 logger = logging.getLogger(__name__)
 
