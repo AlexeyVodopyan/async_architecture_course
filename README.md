@@ -26,3 +26,8 @@ pip install -r requirements.dev.txt
 ```bash
 pre-commit install
 ```
+5. Fill env variables by [example](.env.example) in .env file
+6. Run project with dev-settings:
+```bash
+docker compose -f docker-compose.yml -f docker-compsoe.dev.yml up
+```
