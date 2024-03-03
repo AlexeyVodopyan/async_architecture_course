@@ -71,7 +71,26 @@ async def create_task(
     session: AsyncSession = Depends(get_session),
 ):
     """
-    Get list of tasks
+    Create task
     """
-    result = await service.create_task(session=session, task_input=task_input)
-    return result
+    await service.create_task(session=session, task_input=task_input)
+    return {"message": "User successfully created"}
+
+
+@tasks_router.post(
+    path="/reassign",
+    description="Reassign all opened tasks",
+    responses={
+        status.HTTP_201_CREATED: {"description": "Tasks were reassigned"},
+        status.HTTP_401_UNAUTHORIZED: {"description": "Not Authorized"},
+    },
+)
+async def reassign_tasks(
+    service: TasksAPI = Depends(get_tasks_api_service),
+    session: AsyncSession = Depends(get_session),
+):
+    """
+    Reassign tasks
+    """
+    await service.reassign_tasks(session=session)
+    return {"message": "Tasks successfully reassigned"}

@@ -1,11 +1,11 @@
 # project
-from src.auth.settings.config import settings
 from src.common.messaging.producers.rabbit_base_producer import (
     RabbitProducerFabric,
 )
+from src.task_tracker.settings.config import settings
 
 
-class UsersUpdatesProducer(RabbitProducerFabric):
+class TransactionsProducer(RabbitProducerFabric):
     @property
     def connection_kwargs(self):
         return {
@@ -17,8 +17,8 @@ class UsersUpdatesProducer(RabbitProducerFabric):
 
     @property
     def exchange(self) -> str:
-        return settings.mq.exchange
+        return settings.mq.transactions_exchange
 
     @property
     def queues(self) -> list[str]:
-        return [settings.mq.task_tracker_queue]
+        return [settings.mq.transactions_queue]
