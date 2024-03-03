@@ -3,7 +3,7 @@ version: '3.9'
 services:
   rabbitmq:
     ports:
-      - "${RABBITMQ_PORT}:6379"
+      - "${RABBITMQ_PORT}:5672"
       - "${RABBITMQ_MANAGEMENT_PORT}:15672"
   auth_database:
     ports:
@@ -12,6 +12,12 @@ services:
       - auth_db_dev:/var/lib/postgresql/data
     env_file:
       - .env
+  redis:
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - redis_dev:/data
 
 volumes:
   auth_db_dev:
+  redis_dev:

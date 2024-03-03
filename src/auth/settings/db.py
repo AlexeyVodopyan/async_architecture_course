@@ -11,9 +11,8 @@ from sqlalchemy.ext.asyncio import (
 )
 
 # project
-from src.auth.settings.config import get_settings
+from src.auth.settings.config import settings
 
-settings = get_settings()
 SQLALCHEMY_URL = URL.create(
     drivername="postgresql+asyncpg",
     host=settings.db.host,

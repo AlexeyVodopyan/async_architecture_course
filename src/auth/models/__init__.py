@@ -1,2 +1,2 @@
 # project
-from src.auth.models.user import Role, User
+from src.auth.models.user import Role, User  # noqa
