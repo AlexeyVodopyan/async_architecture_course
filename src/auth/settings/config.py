@@ -13,11 +13,13 @@ class BaseSettings(PydanticSettings):
 
 
 class PostgresSettings(BaseSettings):
-    host: str | None = Field(default="localhost", alias="POSTGRES_HOST")
-    port: int | None = Field(default=5432, alias="POSTGRES_PORT")
-    db: str | None = Field(default="auth_db", alias="POSTGRES_DB")
-    user: str | None = Field(default="admin", alias="POSTGRES_USER")
-    password: str | None = Field(default="admin", alias="POSTGRES_PASSWORD")
+    host: str | None = Field(default="localhost", alias="POSTGRES_HOST_AUTH")
+    port: int | None = Field(default=5432, alias="POSTGRES_PORT_AUTH")
+    db: str | None = Field(default="auth_db", alias="POSTGRES_DB_AUTH")
+    user: str | None = Field(default="admin", alias="POSTGRES_USER_AUTH")
+    password: str | None = Field(
+        default="admin", alias="POSTGRES_PASSWORD_AUTH"
+    )
 
 
 class RabbitMqSettings(BaseSettings):
@@ -27,7 +29,7 @@ class RabbitMqSettings(BaseSettings):
     password: str | None = Field(default="admin", alias="RABBITMQ_PASSWORD")
 
     exchange: str | None = Field(
-        default="users_exchange", alias="RABBITMQ_EXCHANGE"
+        default="users_exchange", alias="RABBITMQ_USERS_EXCHANGE"
     )
     task_tracker_queue: str | None = Field(
         default="users_task_tracker_queue", alias="USERS_TASK_TRACKER_QUEUE"

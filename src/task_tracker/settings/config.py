@@ -13,11 +13,15 @@ class BaseSettings(PydanticSettings):
 
 
 class PostgresSettings(BaseSettings):
-    host: str | None = Field(default="localhost", alias="POSTGRES_HOST")
-    port: int | None = Field(default=5432, alias="POSTGRES_PORT")
-    db: str | None = Field(default="auth_db", alias="POSTGRES_DB")
-    user: str | None = Field(default="admin", alias="POSTGRES_USER")
-    password: str | None = Field(default="admin", alias="POSTGRES_PASSWORD")
+    host: str | None = Field(default="localhost", alias="POSTGRES_HOST_TASKS")
+    port: int | None = Field(default=5431, alias="POSTGRES_PORT_TASKS")
+    db: str | None = Field(default="tasks_db", alias="POSTGRES_DB_TASKS")
+    user: str | None = Field(
+        default="tasks_admin", alias="POSTGRES_USER_TASKS"
+    )
+    password: str | None = Field(
+        default="admin", alias="POSTGRES_PASSWORD_TASKS"
+    )
 
 
 class RabbitMqSettings(BaseSettings):
@@ -26,23 +30,23 @@ class RabbitMqSettings(BaseSettings):
     user: str | None = Field(default="admin", alias="RABBITMQ_USER")
     password: str | None = Field(default="admin", alias="RABBITMQ_PASSWORD")
 
-    exchange: str | None = Field(
-        default="users_exchange", alias="RABBITMQ_EXCHANGE"
+    users_exchange: str | None = Field(
+        default="users_exchange", alias="RABBITMQ_USERS_EXCHANGE"
     )
-    task_tracker_queue: str | None = Field(
+    users_queue: str | None = Field(
         default="users_task_tracker_queue", alias="USERS_TASK_TRACKER_QUEUE"
     )
-
-
-class RedisSettings(BaseSettings):
-    host: str | None = Field(default="localhost", alias="REDIS_HOST")
-    port: int | None = Field(default=6379, alias="REDIS_PORT")
+    transactions_exchange: str | None = Field(
+        default="transactions_exchange", alias="RABBITMQ_TRANSACTIONS_EXCHANGE"
+    )
+    transactions_queue: str | None = Field(
+        default="transactions_queue", alias="TRANSACTIONS_QUEUE"
+    )
 
 
 class Settings(BaseSettings):
     db: PostgresSettings
     mq: RabbitMqSettings
-    redis: RedisSettings
 
     jwt_access_lifetime: int = Field(
         title="access token lifetime, sec",
@@ -70,8 +74,7 @@ def get_settings() -> Settings:
     env_file_path = settings_file_path_for_env(".env")
     db = PostgresSettings(_env_file=env_file_path)
     mq = RabbitMqSettings(_env_file=env_file_path)
-    redis = RedisSettings(_env_file=env_file_path)
-    return Settings(_env_file=env_file_path, db=db, mq=mq, redis=redis)
+    return Settings(_env_file=env_file_path, db=db, mq=mq)
 
 
 settings: Settings = get_settings()

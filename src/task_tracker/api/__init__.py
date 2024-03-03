@@ -2,7 +2,7 @@
 from fastapi import APIRouter
 
 # project
-from src.auth.api.v1 import v1_router
+from src.task_tracker.api.v1 import v1_router
 
 api_router = APIRouter(prefix="/api")
 

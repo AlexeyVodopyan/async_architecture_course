@@ -9,8 +9,10 @@ from fastapi import FastAPI
 
 # project
 from src.auth.api import api_router
+from src.common.logging_config import LOGGING_CONFIG
 
 logger = logging.getLogger(__name__)
+logging.config.dictConfig(LOGGING_CONFIG)
 
 
 @asynccontextmanager
@@ -37,4 +39,5 @@ if __name__ == "__main__":
         app,
         host="0.0.0.0",
         port=8000,
+        log_config=LOGGING_CONFIG,
     )

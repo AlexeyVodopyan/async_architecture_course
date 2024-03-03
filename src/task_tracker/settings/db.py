@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import (
 )
 
 # project
-from src.auth.settings.config import settings
+from src.task_tracker.settings.config import settings
 
 SQLALCHEMY_URL = URL.create(
     drivername="postgresql+asyncpg",

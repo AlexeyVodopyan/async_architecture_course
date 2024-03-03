@@ -7,9 +7,28 @@ services:
       - "${RABBITMQ_MANAGEMENT_PORT}:15672"
   auth_database:
     ports:
-      - "${POSTGRES_PORT}:5432"
+      - "${POSTGRES_PORT_AUTH}:5432"
     volumes:
       - auth_db_dev:/var/lib/postgresql/data
+    environment:
+      POSTGRES_HOST: "${POSTGRES_HOST_AUTH}"
+      POSTGRES_PORT: "${POSTGRES_PORT_AUTH}"
+      POSTGRES_DB: "${POSTGRES_DB_AUTH}"
+      POSTGRES_USER: "${POSTGRES_USER_AUTH}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD_AUTH}"
+    env_file:
+      - .env
+  tasks_database:
+    ports:
+      - "${POSTGRES_PORT_TASKS}:5432"
+    volumes:
+      - tasks_db_dev:/var/lib/postgresql/data
+    environment:
+      POSTGRES_HOST: "${POSTGRES_HOST_TASKS}"
+      POSTGRES_PORT: "${POSTGRES_PORT_TASKS}"
+      POSTGRES_DB: "${POSTGRES_DB_TASKS}"
+      POSTGRES_USER: "${POSTGRES_USER_TASKS}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD_TASKS}"
     env_file:
       - .env
   redis:
@@ -19,5 +38,6 @@ services:
       - redis_dev:/data
 
 volumes:
+  tasks_db_dev:
   auth_db_dev:
   redis_dev:
