@@ -9,7 +9,6 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 # project
-from src.auth.common_schemas.error import ExceptionBody, HTTPException
 from src.auth.messaging.producers.user_updates_producer import (
     UsersUpdatesProducer,
 )
@@ -17,6 +16,7 @@ from src.auth.models.user import Role
 from src.auth.services.auth.jwt_auth import JWTAuth, get_jwt_auth
 from src.auth.services.auth.queries import get_role_pass, insert_user
 from src.auth.services.auth.schemas import TokenClaims
+from src.common.schemas.error import ExceptionBody, HTTPException
 from src.common.schemas.user_updates_schemas import (
     ActionType,
     UserData,

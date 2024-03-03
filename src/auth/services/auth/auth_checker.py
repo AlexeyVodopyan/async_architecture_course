@@ -7,9 +7,9 @@ from fastapi.security.api_key import APIKeyHeader
 from starlette.requests import Request
 
 # project
-from src.auth.common_schemas.error import ExceptionBody, HTTPException
 from src.auth.services.auth.jwt_auth import JWTAuth, get_jwt_auth
 from src.auth.services.auth.schemas import Token
+from src.common.schemas.error import ExceptionBody, HTTPException
 
 
 class ApiKeyHeaderPatched(APIKeyHeader):
