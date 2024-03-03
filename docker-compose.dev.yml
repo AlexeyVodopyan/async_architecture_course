@@ -5,3 +5,13 @@ services:
     ports:
       - "${RABBITMQ_PORT}:6379"
       - "${RABBITMQ_MANAGEMENT_PORT}:15672"
+  auth_database:
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - auth_db_dev:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+volumes:
+  auth_db_dev:
