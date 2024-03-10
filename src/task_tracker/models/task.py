@@ -30,6 +30,12 @@ class Task(Base, TimeMixin):
         default=uuid4,
         server_default=sqlalchemy.text("gen_random_uuid()"),
     )
+    public_id = Column(
+        UUID(as_uuid=True),
+        comment="public ID",
+        default=uuid4,
+        server_default=sqlalchemy.text("gen_random_uuid()"),
+    )
     name = Column(String, nullable=False)
     description = Column(String, nullable=True)
     status = Column(SAEnum(TaskStatus, name="task_status"), nullable=False)

@@ -6,7 +6,7 @@ from uuid import uuid4
 import sqlalchemy
 from sqlalchemy import Column
 from sqlalchemy import Enum as SAEnum
-from sqlalchemy import ForeignKey, String
+from sqlalchemy import ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
 
 # project
@@ -56,3 +56,4 @@ class Transaction(TimeMixin, Base):
     billing_cycle_id = Column(ForeignKey(BillingCycle.id))
     description = Column(String, comment="Description of transaction")
     task_id = Column(ForeignKey(Task.id))
+    value = Column(Integer, comment="Transaction value with sign")

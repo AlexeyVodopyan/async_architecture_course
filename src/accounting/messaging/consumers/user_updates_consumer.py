@@ -3,7 +3,7 @@ import logging
 import typing
 
 # project
-from src.accounting.messaging.consumers.action_handlers import (
+from src.accounting.messaging.consumers.user_action_handlers import (
     CreatedActionHandler,
     UpdatedActionHandler,
 )

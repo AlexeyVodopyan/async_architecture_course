@@ -39,6 +39,9 @@ class RabbitMqSettings(BaseSettings):
     task_updates_exchange: str | None = Field(
         default="task_updates_exchange", alias="RABBITMQ_TASK_UPDATES_EXCHANGE"
     )
+    task_created_queue: str | None = Field(
+        default="task_created_queue", alias="RABBITMQ_TASK_CREATED_QUEUE"
+    )
     task_assigned_queue: str | None = Field(
         default="task_assigned_queue", alias="RABBITMQ_TASK_ASSIGNED_QUEUE"
     )

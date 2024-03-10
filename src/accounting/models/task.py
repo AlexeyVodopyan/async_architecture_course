@@ -28,6 +28,10 @@ class Task(Base, TimeMixin):
         default=uuid4,
         server_default=sqlalchemy.text("gen_random_uuid()"),
     )
+    public_id = Column(
+        UUID(as_uuid=True),
+        comment="public ID",
+    )
     closing_price = Column(
         Float,
         comment="Price of closing of this task",

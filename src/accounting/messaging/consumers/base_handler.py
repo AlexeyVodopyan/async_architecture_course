@@ -2,16 +2,12 @@
 from abc import ABC, abstractmethod
 
 # thirdparty
+from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
-
-# project
-from src.common.schemas.v1.user_updates_schemas import (
-    UserUpdateEventData as UserData,
-)
 
 
 class BaseActionHandler(ABC):
     @staticmethod
     @abstractmethod
-    async def handle(session: AsyncSession, user_data: UserData):
+    async def handle(session: AsyncSession, data: BaseModel):
         pass
