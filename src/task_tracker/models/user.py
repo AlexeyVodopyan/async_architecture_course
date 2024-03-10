@@ -4,7 +4,7 @@ from sqlalchemy import Enum as SAEnum
 from sqlalchemy import String
 
 # project
-from src.common.schemas.user_updates_schemas import Role
+from src.common.schemas.v1.user_updates_schemas import Role
 from src.task_tracker.models.base import Base
 from src.task_tracker.models.mixins import TimeMixin
 

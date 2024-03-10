@@ -1,6 +1,7 @@
 # stdlib
 import functools
 import logging
+from uuid import uuid4
 
 # thirdparty
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -11,10 +12,10 @@ from src.auth.messaging.producers.user_updates_producer import (
 )
 from src.auth.models.user import Role
 from src.auth.services.users.queries import get_users, update_user_data
-from src.common.schemas.user_updates_schemas import (
-    ActionType,
-    UserData,
-    UserUpdateMessage,
+from src.common.schemas.v1.user_updates_schemas import (
+    UserActionType,
+    UserUpdateEventData,
+    UserUpdateMessageV1,
 )
 
 logger = logging.getLogger(__name__)
@@ -26,16 +27,17 @@ class UsersAPI:
 
     async def _send_update_to_mq(
         self,
-        action: ActionType,
+        action: UserActionType,
         email: str,
         role: Role,
         first_name: str,
         last_name: str,
         is_active: bool,
     ):
-        msg = UserUpdateMessage(
+        msg = UserUpdateMessageV1(
+            event_id=uuid4(),
             action=action,
-            data=UserData(
+            data=UserUpdateEventData(
                 email=email,
                 role=role,
                 is_active=is_active,
@@ -58,7 +60,7 @@ class UsersAPI:
         return results.mappings().all()
 
     async def update_user_info(
-        self, session: AsyncSession, email: str, user_data: UserData
+        self, session: AsyncSession, email: str, user_data: UserUpdateEventData
     ):
         """
         Get users list
@@ -68,7 +70,7 @@ class UsersAPI:
         await session.commit()
 
         await self._send_update_to_mq(
-            ActionType.updated,
+            UserActionType.updated,
             email,
             user_data.role,
             user_data.first_name,

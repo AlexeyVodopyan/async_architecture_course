@@ -29,10 +29,10 @@ class RabbitMqSettings(BaseSettings):
     password: str | None = Field(default="admin", alias="RABBITMQ_PASSWORD")
 
     exchange: str | None = Field(
-        default="users_exchange", alias="RABBITMQ_USERS_EXCHANGE"
+        default="user_updates_exchange", alias="RABBITMQ_USER_UPDATES_EXCHANGE"
     )
-    task_tracker_queue: str | None = Field(
-        default="users_task_tracker_queue", alias="USERS_TASK_TRACKER_QUEUE"
+    user_updates_tt_queue: str | None = Field(
+        default="user_updates_tt", alias="RABBITMQ_USER_UPDATES_TT"
     )
 
 

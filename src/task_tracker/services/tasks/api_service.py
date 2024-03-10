@@ -8,12 +8,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 # project
 from src.common.schemas.error import ExceptionBody, HTTPException
-from src.common.schemas.transactions_schemas import (
-    ActionType,
-    TransactionUpdateMessage,
+from src.common.schemas.v1.task_workflow_schemas import (
+    TaskWorkFlowData,
+    TaskWorkFlowMessageV1,
 )
-from src.task_tracker.messaging.producers.transaction_producer import (
-    TransactionsProducer,
+from src.task_tracker.messaging.producers.task_assigned_producer import (
+    TaskAssignedProducer,
+)
+from src.task_tracker.messaging.producers.task_closed_producer import (
+    TaskClosedProducer,
 )
 from src.task_tracker.services.tasks.queries import (
     close_task,
@@ -26,16 +29,16 @@ from src.task_tracker.services.tasks.schemas import TaskInput
 
 class TasksAPI:
     def __init__(self):
-        self.transactions_producer = TransactionsProducer()
+        self.task_closed_producer = TaskClosedProducer()
+        self.task_assigned_producer = TaskAssignedProducer()
 
+    @staticmethod
     async def _send_update_to_mq(
-        self, action: ActionType, email: str, task_name: str
+        msg: TaskWorkFlowMessageV1,
+        producer: TaskClosedProducer | TaskAssignedProducer,
     ):
-        msg = TransactionUpdateMessage(
-            action=action, user=email, task_name=task_name
-        )
-        msg_bytes = self.transactions_producer.prepare_body_message(msg)
-        await self.transactions_producer.produce(msg_bytes)
+        msg_bytes = producer.prepare_body_message(msg)
+        await producer.produce(msg_bytes)
 
     async def create_task(self, session: AsyncSession, task_input: TaskInput):
         query = insert_task(
@@ -44,9 +47,14 @@ class TasksAPI:
         await session.execute(query)
         await session.commit()
         await self._send_update_to_mq(
-            action=ActionType.ASSIGNED,
-            email=task_input.assigned_to,
-            task_name=task_input.name,
+            producer=self.task_assigned_producer,
+            msg=TaskWorkFlowMessageV1(
+                event_id=uuid.uuid4(),
+                data=TaskWorkFlowData(
+                    user_assigned_to=task_input.assigned_to,
+                    task_name=task_input.name,
+                ),
+            ),
         )
 
     async def close_task(self, session: AsyncSession, task_id: uuid.UUID):
@@ -57,9 +65,14 @@ class TasksAPI:
         if task_info:
             await session.commit()
             await self._send_update_to_mq(
-                action=ActionType.CLOSED,
-                email=task_info[0][1],
-                task_name=task_info[0][0],
+                producer=self.task_closed_producer,
+                msg=TaskWorkFlowMessageV1(
+                    event_id=uuid.uuid4(),
+                    data=TaskWorkFlowData(
+                        user_assigned_to=task_info[0][1],
+                        task_name=task_info[0][0],
+                    ),
+                ),
             )
             return
 
@@ -92,7 +105,7 @@ class TasksAPI:
         session: AsyncSession,
     ):
         """
-        Get users list
+        Get tasks list
         """
         query = get_tasks()
         results = await session.execute(query)

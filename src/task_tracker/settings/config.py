@@ -30,17 +30,20 @@ class RabbitMqSettings(BaseSettings):
     user: str | None = Field(default="admin", alias="RABBITMQ_USER")
     password: str | None = Field(default="admin", alias="RABBITMQ_PASSWORD")
 
-    users_exchange: str | None = Field(
-        default="users_exchange", alias="RABBITMQ_USERS_EXCHANGE"
+    user_updates_exchange: str | None = Field(
+        default="user_updates_exchange", alias="RABBITMQ_USER_UPDATES_EXCHANGE"
     )
-    users_queue: str | None = Field(
-        default="users_task_tracker_queue", alias="USERS_TASK_TRACKER_QUEUE"
+    user_updates_queue: str | None = Field(
+        default="user_updates_tt", alias="RABBITMQ_USER_UPDATES_TT"
     )
-    transactions_exchange: str | None = Field(
-        default="transactions_exchange", alias="RABBITMQ_TRANSACTIONS_EXCHANGE"
+    task_updates_exchange: str | None = Field(
+        default="task_updates_exchange", alias="RABBITMQ_TASK_UPDATES_EXCHANGE"
     )
-    transactions_queue: str | None = Field(
-        default="transactions_queue", alias="TRANSACTIONS_QUEUE"
+    task_assigned_queue: str | None = Field(
+        default="task_assigned_queue", alias="RABBITMQ_TASK_ASSIGNED_QUEUE"
+    )
+    task_closed_queue: str | None = Field(
+        default="task_closed_queue", alias="RABBITMQ_TASK_CLOSED_QUEUE"
     )
 
 

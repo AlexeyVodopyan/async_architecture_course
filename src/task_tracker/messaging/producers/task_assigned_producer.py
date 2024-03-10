@@ -5,7 +5,7 @@ from src.common.messaging.producers.rabbit_base_producer import (
 from src.task_tracker.settings.config import settings
 
 
-class TransactionsProducer(RabbitProducerFabric):
+class TaskAssignedProducer(RabbitProducerFabric):
     @property
     def connection_kwargs(self):
         return {
@@ -17,8 +17,8 @@ class TransactionsProducer(RabbitProducerFabric):
 
     @property
     def exchange(self) -> str:
-        return settings.mq.transactions_exchange
+        return settings.mq.task_updates_exchange
 
     @property
     def queues(self) -> list[str]:
-        return [settings.mq.transactions_queue]
+        return [settings.mq.task_assigned_queue]

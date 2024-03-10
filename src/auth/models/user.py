@@ -7,7 +7,7 @@ from sqlalchemy_utils import PasswordType
 # project
 from src.auth.models.base import Base
 from src.auth.models.mixins import TimeMixin
-from src.common.schemas.user_updates_schemas import Role
+from src.common.schemas.v1.user_updates_schemas import Role
 
 
 class User(TimeMixin, Base):
