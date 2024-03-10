@@ -6,9 +6,11 @@ import typing
 from src.common.messaging.consumers.rabbit_base_consumer import (
     RabbitConsumerFabric,
 )
-from src.common.schemas.user_updates_schemas import (
-    ActionType,
-    UserUpdateMessage,
+from src.common.schemas.v1.user_updates_schemas import (
+    UserActionType as ActionType,
+)
+from src.common.schemas.v1.user_updates_schemas import (
+    UserUpdateMessageV1 as UserUpdateMessage,
 )
 from src.task_tracker.messaging.consumers.action_handlers import (
     CreatedActionHandler,
@@ -39,11 +41,11 @@ class UsersUpdatesConsumer(RabbitConsumerFabric):
 
     @property
     def exchange(self) -> str:
-        return settings.mq.users_exchange
+        return settings.mq.user_updates_exchange
 
     @property
     def queues(self) -> list[str]:
-        return [settings.mq.users_queue]
+        return [settings.mq.user_updates_exchange]
 
     @property
     def msg_model(self) -> typing.Type[UserUpdateMessage]:

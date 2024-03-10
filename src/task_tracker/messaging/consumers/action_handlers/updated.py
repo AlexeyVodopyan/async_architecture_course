@@ -6,7 +6,9 @@ from sqlalchemy import update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 # project
-from src.common.schemas.user_updates_schemas import UserData
+from src.common.schemas.v1.user_updates_schemas import (
+    UserUpdateEventData as UserData,
+)
 from src.task_tracker.messaging.consumers.action_handlers.base import (
     BaseActionHandler,
 )
