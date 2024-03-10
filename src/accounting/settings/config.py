@@ -13,14 +13,19 @@ class BaseSettings(PydanticSettings):
 
 
 class PostgresSettings(BaseSettings):
-    host: str | None = Field(default="localhost", alias="POSTGRES_HOST_TASKS")
-    port: int | None = Field(default=5431, alias="POSTGRES_PORT_TASKS")
-    db: str | None = Field(default="tasks_db", alias="POSTGRES_DB_TASKS")
+    host: str | None = Field(
+        default="localhost", alias="POSTGRES_HOST_ACCOUNTING"
+    )
+
+    port: int | None = Field(default=5431, alias="POSTGRES_PORT_ACCOUNTING")
+    db: str | None = Field(
+        default="accounting_db", alias="POSTGRES_DB_ACCOUNTING"
+    )
     user: str | None = Field(
-        default="tasks_admin", alias="POSTGRES_USER_TASKS"
+        default="tasks_admin", alias="POSTGRES_USER_ACCOUNTING"
     )
     password: str | None = Field(
-        default="admin", alias="POSTGRES_PASSWORD_TASKS"
+        default="admin", alias="POSTGRES_PASSWORD_ACCOUNTING"
     )
 
 

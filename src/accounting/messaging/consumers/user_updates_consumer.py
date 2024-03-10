@@ -3,6 +3,12 @@ import logging
 import typing
 
 # project
+from src.accounting.messaging.consumers.user_action_handlers import (
+    CreatedActionHandler,
+    UpdatedActionHandler,
+)
+from src.accounting.settings.config import settings
+from src.accounting.settings.db import get_session_cm
 from src.common.messaging.consumers.rabbit_base_consumer import (
     RabbitConsumerFabric,
 )
@@ -12,12 +18,6 @@ from src.common.schemas.v1.user_updates_schemas import (
 from src.common.schemas.v1.user_updates_schemas import (
     UserUpdateMessageV1 as UserUpdateMessage,
 )
-from src.task_tracker.messaging.consumers.action_handlers import (
-    CreatedActionHandler,
-    UpdatedActionHandler,
-)
-from src.task_tracker.settings.config import settings
-from src.task_tracker.settings.db import get_session_cm
 
 logger = logging.getLogger(__name__)
 

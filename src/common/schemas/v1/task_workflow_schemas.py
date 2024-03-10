@@ -7,6 +7,7 @@ from pydantic import BaseModel
 
 
 class TaskWorkFlowData(BaseModel):
+    task_public_id: UUID
     user_assigned_to: str
     task_name: str
 

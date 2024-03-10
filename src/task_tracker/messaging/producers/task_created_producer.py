@@ -5,9 +5,7 @@ from src.common.messaging.producers.rabbit_base_producer import (
 from src.task_tracker.settings.config import settings
 
 
-class TaskClosedProducer(RabbitProducerFabric):
-    """Producer CUD события о создании задачи"""
-
+class TaskCreatedProducer(RabbitProducerFabric):
     @property
     def connection_kwargs(self):
         return {
@@ -23,4 +21,4 @@ class TaskClosedProducer(RabbitProducerFabric):
 
     @property
     def queues(self) -> list[str]:
-        return [settings.mq.task_closed_queue]
+        return [settings.mq.task_created_queue]

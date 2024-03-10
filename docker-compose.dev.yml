@@ -31,6 +31,19 @@ services:
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD_TASKS}"
     env_file:
       - .env
+  accounting_database:
+    ports:
+      - "${POSTGRES_PORT_ACCOUNTING}:5432"
+    volumes:
+      - accounting_db_dev:/var/lib/postgresql/data
+    environment:
+      POSTGRES_HOST: "${POSTGRES_HOST_ACCOUNTING}"
+      POSTGRES_PORT: "${POSTGRES_PORT_ACCOUNTING}"
+      POSTGRES_DB: "${POSTGRES_DB_ACCOUNTING}"
+      POSTGRES_USER: "${POSTGRES_USER_ACCOUNTING}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD_ACCOUNTING}"
+    env_file:
+      - .env
   redis:
     ports:
       - "${REDIS_PORT}:6379"
@@ -41,3 +54,4 @@ volumes:
   tasks_db_dev:
   auth_db_dev:
   redis_dev:
+  accounting_db_dev:
