@@ -5,7 +5,7 @@ from functools import cache
 from redis.asyncio import Redis
 
 # project
-from src.task_tracker.settings.config import settings
+from src.accounting.settings.config import settings
 
 
 @cache
