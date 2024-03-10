@@ -21,4 +21,4 @@ class UsersUpdatesProducer(RabbitProducerFabric):
 
     @property
     def queues(self) -> list[str]:
-        return [settings.mq.task_tracker_queue]
+        return [settings.mq.user_updates_tt_queue]

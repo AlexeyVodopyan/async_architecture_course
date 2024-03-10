@@ -31,8 +31,8 @@ class RabbitMqSettings(BaseSettings):
     exchange: str | None = Field(
         default="users_exchange", alias="RABBITMQ_USERS_EXCHANGE"
     )
-    task_tracker_queue: str | None = Field(
-        default="users_task_tracker_queue", alias="USERS_TASK_TRACKER_QUEUE"
+    user_updates_tt_queue: str | None = Field(
+        default="user_updates_tt", alias="USER_UPDATES_TT"
     )
 
 

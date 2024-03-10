@@ -3,7 +3,7 @@ from sqlalchemy import Select, Update, select, update
 
 # project
 from src.auth.models.user import User
-from src.auth.services.users.schemas import UserData
+from src.common.schemas.v1.user_updates_schemas import UserUpdateEventData
 
 
 def get_users() -> Select:
@@ -13,7 +13,9 @@ def get_users() -> Select:
     return query
 
 
-def update_user_data(email: str, data_to_update: UserData) -> Update:
+def update_user_data(
+    email: str, data_to_update: UserUpdateEventData
+) -> Update:
     query = (
         update(User)
         .where(User.email == email)

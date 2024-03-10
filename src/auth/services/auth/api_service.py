@@ -1,6 +1,7 @@
 # stdlib
 import functools
 import logging
+from uuid import uuid4
 
 # thirdparty
 from fastapi import status
@@ -17,10 +18,10 @@ from src.auth.services.auth.jwt_auth import JWTAuth, get_jwt_auth
 from src.auth.services.auth.queries import get_role_pass, insert_user
 from src.auth.services.auth.schemas import TokenClaims
 from src.common.schemas.error import ExceptionBody, HTTPException
-from src.common.schemas.user_updates_schemas import (
-    ActionType,
-    UserData,
-    UserUpdateMessage,
+from src.common.schemas.v1.user_updates_schemas import (
+    UserActionType,
+    UserUpdateEventData,
+    UserUpdateMessageV1,
 )
 
 logger = logging.getLogger(__name__)
@@ -90,11 +91,12 @@ class AuthAPI:
         return user_info
 
     async def _send_update_to_mq(
-        self, action: ActionType, email: str, role: Role
+        self, action: UserActionType, email: str, role: Role
     ):
-        msg = UserUpdateMessage(
+        msg = UserUpdateMessageV1(
+            event_id=uuid4(),
             action=action,
-            data=UserData(email=email, role=role, is_active=True),
+            data=UserUpdateEventData(email=email, role=role, is_active=True),
         )
         msg_bytes = self.user_updates_producer.prepare_body_message(msg)
         await self.user_updates_producer.produce(msg_bytes)
@@ -126,7 +128,9 @@ class AuthAPI:
                     ]
                 ),
             )
-        await self._send_update_to_mq(ActionType.created, email, Role.PARROT)
+        await self._send_update_to_mq(
+            UserActionType.created, email, Role.PARROT
+        )
 
     async def drop_token(self, username: str):
         """Drop secret"""

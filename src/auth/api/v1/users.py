@@ -10,7 +10,7 @@ from src.auth.services.auth.auth_checker import Authenticated
 from src.auth.services.users.api_service import UsersAPI, get_users_api_service
 from src.auth.services.users.schemas import Users
 from src.auth.settings.db import get_session
-from src.common.schemas.user_updates_schemas import UserData
+from src.common.schemas.v1.user_updates_schemas import UserUpdateEventData
 
 users_router = APIRouter(
     prefix="/users",
@@ -51,7 +51,7 @@ async def users_list(
 )
 async def update_user(
     email: str,
-    updated_data: UserData,
+    updated_data: UserUpdateEventData,
     users_service: UsersAPI = Depends(get_users_api_service),
     session: AsyncSession = Depends(get_session),
 ):
