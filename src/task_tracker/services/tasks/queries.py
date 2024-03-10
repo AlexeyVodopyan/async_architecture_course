@@ -29,9 +29,10 @@ def get_users() -> Select:
 
 
 def insert_task(
-    name: str, assigned_to: str, description: str | None
+    name: str, assigned_to: str, description: str | None, public_id: uuid.UUID
 ) -> Insert:
     query = insert(Task).values(
+        public_id=public_id,
         name=name,
         assigned_to=assigned_to,
         description=description,
@@ -49,6 +50,6 @@ def close_task(
         .values(
             status=TaskStatus.CLOSED,
         )
-        .returning(Task.name, Task.assigned_to)
+        .returning(Task.name, Task.assigned_to, Task.public_id)
     )
     return query

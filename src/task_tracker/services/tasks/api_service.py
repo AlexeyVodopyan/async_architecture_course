@@ -41,8 +41,12 @@ class TasksAPI:
         await producer.produce(msg_bytes)
 
     async def create_task(self, session: AsyncSession, task_input: TaskInput):
+        public_id = uuid.uuid4()
         query = insert_task(
-            task_input.name, task_input.assigned_to, task_input.description
+            task_input.name,
+            task_input.assigned_to,
+            task_input.description,
+            public_id=public_id,
         )
         await session.execute(query)
         await session.commit()
@@ -53,6 +57,7 @@ class TasksAPI:
                 data=TaskWorkFlowData(
                     user_assigned_to=task_input.assigned_to,
                     task_name=task_input.name,
+                    public_id=public_id,
                 ),
             ),
         )
@@ -69,6 +74,7 @@ class TasksAPI:
                 msg=TaskWorkFlowMessageV1(
                     event_id=uuid.uuid4(),
                     data=TaskWorkFlowData(
+                        task_public_id=task_info[0][2],
                         user_assigned_to=task_info[0][1],
                         task_name=task_info[0][0],
                     ),
