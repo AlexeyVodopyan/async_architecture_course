@@ -45,7 +45,7 @@ class UsersUpdatesConsumer(RabbitConsumerFabric):
 
     @property
     def queues(self) -> list[str]:
-        return [settings.mq.user_updates_exchange]
+        return [settings.mq.user_updates_queue]
 
     @property
     def msg_model(self) -> typing.Type[UserUpdateMessage]:
